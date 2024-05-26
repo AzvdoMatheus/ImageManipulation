@@ -7,10 +7,9 @@ FILE* abrirArquivo(char nomeArquivo[]);
 int alocarValores(FILE *fp, struct Imagem *imagem, struct RGB ***pixels);
 void gerarImagemCinza(struct Imagem *imagem, struct RGB **pixels);
 void gerarImagemNegativa(struct Imagem *imagem, struct RGB **pixels);
-FILE* aumentarBrilhoImagem();
-FILE* diminuiBrilhoImagem();
+void modificarBrilhoImagem(struct Imagem *imagem, struct RGB **pixels, float valorPercentual);
 void rotacionarImagem(struct Imagem *imagem, struct RGB **pixels);
-FILE* envelhecerImagem();
+void envelhecerImagem(struct Imagem *imagem, struct RGB **pixels);
 void escreverNovaImagem(char nomeArquivo[], struct Imagem *imagem, struct RGB **pixels);
 
 #endif

@@ -1,14 +1,18 @@
 #include "manipulacaoPixels.c"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void abrirMenuOpcoes();
 
 void abrirMenuOpcoes() {
     int op;
+    int qtdImagensCinza = 0;
+    float valorPercentual;
     char nomeArquivo[30];
     struct Imagem imagem;
     struct RGB **pixels = NULL;
+    int imagemCarregada = 0;
 
     do {
         printf("\n\n========== Menu opcoes ==========\n\n");
@@ -40,61 +44,92 @@ void abrirMenuOpcoes() {
                     break;
                 }
                 fclose(fp);
+                imagemCarregada = 1;
                 printf("\n|----------------------------|\n");
                 printf("|Imagem carregada com sucesso|\n");
                 printf("|----------------------------|\n");
                 break;
 
             case 2:
+                if (!imagemCarregada) {
+                    printf("\n|-------------------------|\n");
+                    printf("|Nenhuma imagem carregada.|\n");
+                    printf("|-------------------------|\n");
+                    break;
+                }
                 gerarImagemCinza(&imagem, pixels);
+                qtdImagensCinza++;
                 printf("\n|------------------------------------------|\n");
                 printf("|Imagem em tons de cinza gerada com sucesso|\n");
                 printf("|------------------------------------------|\n");
                 break;
 
-            // envelhecer imagem
             case 3:
-                // Lógica para envelhecimento da imagem
+                if (!imagemCarregada) {
+                    printf("\n|------------------------|\n");
+                    printf("|Nenhuma imagem carregada|\n");
+                    printf("|------------------------|\n");
+                    break;
+                }
+                envelhecerImagem(&imagem, pixels);
+                printf("\n|-------------------------------------|\n");
+                printf("|Imagem envelhecida gerada com sucesso|\n");
+                printf("|-------------------------------------|\n");
                 break;
 
-            // rotacionar 90 graus
             case 4:
+                if (!imagemCarregada) {
+                    printf("\n|------------------------|\n");
+                    printf("|Nenhuma imagem carregada|\n");
+                    printf("|------------------------|\n");
+                    break;
+                }
                 rotacionarImagem(&imagem, pixels);
-                printf("\n|------------------------------------------|\n");
-                printf("|Imagem rotacionada 90 graus com sucesso|\n");
-                printf("|------------------------------------------|\n");
+                printf("\n|----------------------------------------------|\n");
+                printf("|Imagem rotacionada 90 graus gerada com sucesso|\n");
+                printf("|----------------------------------------------|\n");
                 break;
 
             case 5: {
+                if (!imagemCarregada) {
+                    printf("\n|------------------------|\n");
+                    printf("|Nenhuma imagem carregada|\n");
+                    printf("|------------------------|\n");
+                    break;
+                }
                 int sub_op;
                 do {
                     printf("\n\n========== Opcoes imagens cinzas ==========\n\n");
                     printf("1- Gerar imagem negativa\n");
-                    printf("2- Aumentar o brilho\n");
-                    printf("3- Diminuir o brilho\n");
-                    printf("4- Retornar ao menu principal\n");
-                    printf("Insira a opcao desejada: ");
+                    printf("2- Modificar brilho da imagem\n");
+                    printf("3- Retornar ao menu principal\n");
+                    printf("\nInsira a opcao desejada: ");
                     scanf("%d", &sub_op);
 
                     switch (sub_op) {
                         case 1:
                             gerarImagemNegativa(&imagem, pixels);
-                            printf("\n|--------------------------------|\n");
+                            printf("\n|----------------------------------|\n");
                             printf("|Imagem negativa gerada com sucesso|\n");
                             printf("|----------------------------------|\n");
                             break;
 
-                        // aumentar brilho
                         case 2:
-                            // Lógica para aumentar o brilho
+                            printf("Indique qual a porcentagem de brilho deseja modificar(0 - 100): ");
+                            scanf("%f", &valorPercentual);
+                            if (valorPercentual < 0 || valorPercentual > 100) {
+                                printf("\n|--------------------------------|\n");
+                                printf("|Valor inválido. Tente novamente.|\n");
+                                printf("|--------------------------------|\n");
+                                break;
+                            }
+                            modificarBrilhoImagem(&imagem, pixels, valorPercentual);
+                            printf("\n|----------------------------|\n");
+                            printf("|Brilho modificado com sucesso|\n");
+                            printf("|----------------------------|\n");
                             break;
 
-                        // diminuir brilho
                         case 3:
-                            // Lógica para diminuir o brilho
-                            break;
-
-                        case 4:
                             printf("\n|----------------------------|\n");
                             printf("|Retornando ao menu principal|\n");
                             printf("|----------------------------|\n");
@@ -106,11 +141,17 @@ void abrirMenuOpcoes() {
                             printf("|-------------------------------|\n");
                             break;
                     }
-                } while (sub_op != 4);
+                } while (sub_op != 3);
                 break;
             }
 
             case 6:
+                if (pixels != NULL) {
+                    for (int i = 0; i < imagem.linha; i++) {
+                        free(pixels[i]);
+                    }
+                    free(pixels);
+                }
                 printf("\n|-------------------|\n");
                 printf("|Fechando o programa|\n");
                 printf("|-------------------|\n\n");
