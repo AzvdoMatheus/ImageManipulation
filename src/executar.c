@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "manipulacaoPixels.c"
+#include "criacaoMenu.c"
 
 int main() {
   abrirMenuOpcoes();
