@@ -7,9 +7,8 @@ void abrirMenuOpcoes();
 
 void abrirMenuOpcoes() {
     int op;
-    int qtdImagensCinza = 0;
     float valorPercentual;
-    char nomeArquivo[30];
+    char nomeArquivo[100];
     struct Imagem imagem;
     struct RGB **pixels = NULL;
     int imagemCarregada = 0;
@@ -58,7 +57,6 @@ void abrirMenuOpcoes() {
                     break;
                 }
                 gerarImagemCinza(&imagem, pixels);
-                qtdImagensCinza++;
                 printf("\n|------------------------------------------|\n");
                 printf("|Imagem em tons de cinza gerada com sucesso|\n");
                 printf("|------------------------------------------|\n");
@@ -102,7 +100,8 @@ void abrirMenuOpcoes() {
                     printf("\n\n========== Opcoes imagens cinzas ==========\n\n");
                     printf("1- Gerar imagem negativa\n");
                     printf("2- Modificar brilho da imagem\n");
-                    printf("3- Retornar ao menu principal\n");
+                    printf("3- Gerar imagem saturada\n");
+                    printf("4- Retornar ao menu principal\n");
                     printf("\nInsira a opcao desejada: ");
                     scanf("%d", &sub_op);
 
@@ -124,12 +123,19 @@ void abrirMenuOpcoes() {
                                 break;
                             }
                             modificarBrilhoImagem(&imagem, pixels, valorPercentual);
-                            printf("\n|----------------------------|\n");
+                            printf("\n|-----------------------------|\n");
                             printf("|Brilho modificado com sucesso|\n");
-                            printf("|----------------------------|\n");
+                            printf("|-----------------------------|\n");
+                            break;
+                        
+                        case 3:
+                            saturarImagemCinza(&imagem, pixels);
+                            printf("\n|--------------------------------|\n");
+                            printf("|Saturacao modificada com sucesso|\n");
+                            printf("|--------------------------------|\n");
                             break;
 
-                        case 3:
+                        case 4:
                             printf("\n|----------------------------|\n");
                             printf("|Retornando ao menu principal|\n");
                             printf("|----------------------------|\n");
@@ -141,9 +147,8 @@ void abrirMenuOpcoes() {
                             printf("|-------------------------------|\n");
                             break;
                     }
-                } while (sub_op != 3);
+                } while (sub_op != 4);
                 break;
-            }
 
             case 6:
                 if (pixels != NULL) {

@@ -11,5 +11,6 @@ void modificarBrilhoImagem(struct Imagem *imagem, struct RGB **pixels, float val
 void rotacionarImagem(struct Imagem *imagem, struct RGB **pixels);
 void envelhecerImagem(struct Imagem *imagem, struct RGB **pixels);
 void escreverNovaImagem(char nomeArquivo[], struct Imagem *imagem, struct RGB **pixels);
+void saturarImagemCinza(struct Imagem *imagem, struct RGB **pixels);
 
 #endif

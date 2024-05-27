@@ -21,6 +21,7 @@ void gerarImagemNegativa(struct Imagem *imagem, struct RGB **pixels);
 void rotacionarImagem(struct Imagem *imagem, struct RGB **pixels);
 void modificarBrilhoImagem(struct Imagem *imagem, struct RGB **pixels, float valorPercentual);
 void envelhecerImagem(struct Imagem *imagem, struct RGB **pixels);
+void saturarImagemCinza(struct Imagem *imagem, struct RGB **pixels);
 
 FILE *abrirArquivo(char nomeArquivo[]) {
     FILE *fp = fopen(nomeArquivo, "r");
@@ -106,7 +107,7 @@ void gerarImagemCinza(struct Imagem *imagem, struct RGB **pixels) {
             pixels[i][j].B = cinza;
         }
     }
-    escreverNovaImagem("./imagens_geradas/imagem_cinza.ppm", imagem, pixels);
+    escreverNovaImagem("../imagens_geradas/imagem_cinza.ppm", imagem, pixels);
 }
 
 void gerarImagemNegativa(struct Imagem *imagem, struct RGB **pixels) { 
@@ -117,7 +118,7 @@ void gerarImagemNegativa(struct Imagem *imagem, struct RGB **pixels) {
             pixels[i][j].B = imagem->valorMaximo - pixels[i][j].B;
         }
     }
-    escreverNovaImagem("./imagens_geradas/imagem_negativa.ppm", imagem, pixels);
+    escreverNovaImagem("../imagens_geradas/imagem_negativa.ppm", imagem, pixels);
 }
 
 void modificarBrilhoImagem(struct Imagem *imagem, struct RGB **pixels, float valorPercentual) {
@@ -132,8 +133,24 @@ void modificarBrilhoImagem(struct Imagem *imagem, struct RGB **pixels, float val
             pixels[i][j].B = novoB > 255 ? 255 : (novoB < 0 ? 0 : novoB);
         }
     }
-    escreverNovaImagem("./imagens_geradas/imagemBrilhoModificado.ppm", imagem, pixels);
+    escreverNovaImagem("../imagens_geradas/imagemBrilhoModificado.ppm", imagem, pixels);
 }
+
+void saturarImagemCinza(struct Imagem *imagem, struct RGB **pixels) {
+    float fator = 1.3;  
+    for (int i = 0; i < imagem->linha; i++) {
+        for (int j = 0; j < imagem->coluna; j++) { 
+            int novoValor = (int)(pixels[i][j].R * fator);
+            novoValor = novoValor > 255 ? 255 : novoValor;
+
+            pixels[i][j].R = novoValor;
+            pixels[i][j].G = novoValor;
+            pixels[i][j].B = novoValor;
+        }
+    }
+    escreverNovaImagem("../imagens_geradas/imagemCinzaSaturada.ppm", imagem, pixels);
+}
+
 
 void envelhecerImagem(struct Imagem *imagem, struct RGB **pixels) {
     for (int i = 0; i < imagem->linha; i++) {
@@ -143,7 +160,7 @@ void envelhecerImagem(struct Imagem *imagem, struct RGB **pixels) {
             pixels[i][j].B = pixels[i][j].B > 20 ? pixels[i][j].B * 0 : 0;
         }
     }
-    escreverNovaImagem("./imagens_geradas/imagemEnvelhecida.ppm", imagem, pixels);
+    escreverNovaImagem("../imagens_geradas/imagemEnvelhecida.ppm", imagem, pixels);
 }
 
 void rotacionarImagem(struct Imagem *imagem, struct RGB **pixels) {
@@ -162,7 +179,7 @@ void rotacionarImagem(struct Imagem *imagem, struct RGB **pixels) {
             pixelsRotacionados[j][imagem->linha - 1 - i] = pixels[i][j];
         }
     }
-    escreverNovaImagem("./imagens_geradas/imagem_rotacionada.ppm", &novaImagem, pixelsRotacionados);
+    escreverNovaImagem("../imagens_geradas/imagem_rotacionada.ppm", &novaImagem, pixelsRotacionados);
 
     for (int i = 0; i < novaImagem.linha; i++) {
         free(pixelsRotacionados[i]);
