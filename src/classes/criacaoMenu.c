@@ -90,7 +90,7 @@ void abrirMenuOpcoes() {
                 printf("|----------------------------------------------|\n");
                 break;
 
-            case 5: {
+            case 5: 
                 if (!imagemCarregada) {
                     printf("\n|------------------------|\n");
                     printf("|Nenhuma imagem carregada|\n");
